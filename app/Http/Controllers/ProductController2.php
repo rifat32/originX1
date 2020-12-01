@@ -92,9 +92,9 @@ else{
         $image3->move(public_path('ProductImages'),$image3Name);
         // Find Product
         $Product = Product::find($req->id);
-        unlink(public_path('ProductImages').'/'.$Product->image_1);
-        unlink(public_path('ProductImages').'/'.$Product->image_2);
-        unlink(public_path('ProductImages').'/'.$Product->image_3);
+        // unlink(public_path('ProductImages').'/'.$Product->image_1);
+        // unlink(public_path('ProductImages').'/'.$Product->image_2);
+        // unlink(public_path('ProductImages').'/'.$Product->image_3);
         $Product->ids = $ids;
         $Product->name = $name;
         $Product->descriptionIntroduction = $descriptionIntroduction;
