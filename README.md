@@ -93,6 +93,7 @@ class RegisterResponse implements RegisterResponseContract {
  session()->pull('link');
 <strong>
 </pre>
+<h2>Thank you so much </h2>
 
 
 
