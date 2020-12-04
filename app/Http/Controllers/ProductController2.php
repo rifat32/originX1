@@ -52,7 +52,7 @@ else{
 }
     }
     // Update Product
-  public function updateProduct(Request $req){
+public function updateProduct(Request $req){
         $ids = $req->ids;
         $service = $req->service;
         $name = $req->name;
@@ -95,6 +95,57 @@ else{
         $image3->move(public_path('ProductImages'),$image3Name);
 
         }
+
+        // Find Product
+        $Product = Product::find($req->id);
+        unlink(public_path('ProductImages').'/'.$Product->image_1);
+        unlink(public_path('ProductImages').'/'.$Product->image_2);
+        unlink(public_path('ProductImages').'/'.$Product->image_3);
+        $Product->ids = $ids;
+        $Product->name = $name;
+        $Product->descriptionIntroduction = $descriptionIntroduction;
+        $Product->descriptionFeatures = $descriptionFeatures;
+        $Product->currentPrice = $currentPrice;
+        $Product->previousPrice = $previousPrice;
+        $Product->service = $service;
+        $Product->category = $productCategory;
+        $Product->brand = $productBrand;
+        $Product->tags = $tags;
+        $Product->stock = $stock;
+        $Product->sizes = $sizes;
+        $Product->colors = $colors;
+        if ($req->hasFile('img1')) {
+            $Product->image_1 =   $image1Name;
+
+        }
+        if ($req->hasFile('img2')) {
+            $Product->image_2 =   $image2Name;
+
+        }
+        if ($req->hasFile('img3')) {
+            $Product->image_3 =   $image3Name;
+
+        }
+
+        $Product->save();
+        // updated current price is
+        $updatedCurrentPrice =  $Product->currentPrice;
+
+$updateCarts = DB::table('carts')
+              ->select('productQuantity')
+              ->where(['productId'=>$req->id])
+              ->get();
+              if(count($updateCarts) !== 0){
+foreach($updateCarts as $updateCart){
+$updateCartTotalPrice = $updatedCurrentPrice * $updateCart->productQuantity;
+               DB::table('carts')
+              ->update(['productPrice'=> $updatedCurrentPrice,'productTotalPrice'=>$updateCartTotalPrice,'productImage'=>$Product->image_1,"productName"=>$Product->name]);
+
+}
+              }
+
+return back()->with('product-updated','Product has been updated successfully');
+    }
 
 
 
