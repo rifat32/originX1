@@ -52,7 +52,7 @@ else{
 }
     }
     // Update Product
-    public function updateProduct(Request $req){
+  public function updateProduct(Request $req){
         $ids = $req->ids;
         $service = $req->service;
         $name = $req->name;
@@ -78,59 +78,26 @@ else{
         }
         $productCategory = $req->productCategory;
         $productBrand = $req->productBrand;
-        $image1 = $req->file('img1');
-        $image2 = $req->file('img2');
-        $image3 = $req->file('img3');
+        if ($req->hasFile('img1')) {
+            $image1 = $req->file('img1');
+            $image1Name = time() . "img1" . "." . $image1->extension();
+            $image1->move(public_path('ProductImages'),$image1Name);
+        }
+        if ($req->hasFile('img2')) {
+            $image2 = $req->file('img2');
+            $image2Name = time() . "img2" . "." . $image2->extension();
+            $image2->move(public_path('ProductImages'),$image2Name);
 
-        $image1Name = time() . "img1" . "." . $image1->extension();
-        $image1->move(public_path('ProductImages'),$image1Name);
-
-        $image2Name = time() . "img2" . "." . $image2->extension();
-        $image2->move(public_path('ProductImages'),$image2Name);
-
-        $image3Name = time() . "img3" . "." . $image3->extension();
+        }
+        if ($req->hasFile('img3')) {
+            $image3 = $req->file('img3');
+            $image3Name = time() . "img3" . "." . $image3->extension();
         $image3->move(public_path('ProductImages'),$image3Name);
-        // Find Product
-        $Product = Product::find($req->id);
-        // unlink(public_path('ProductImages').'/'.$Product->image_1);
-        // unlink(public_path('ProductImages').'/'.$Product->image_2);
-        // unlink(public_path('ProductImages').'/'.$Product->image_3);
-        $Product->ids = $ids;
-        $Product->name = $name;
-        $Product->descriptionIntroduction = $descriptionIntroduction;
-        $Product->descriptionFeatures = $descriptionFeatures;
-        $Product->currentPrice = $currentPrice;
-        $Product->previousPrice = $previousPrice;
-        $Product->service = $service;
-        $Product->category = $productCategory;
-        $Product->brand = $productBrand;
-        $Product->tags = $tags;
-        $Product->stock = $stock;
-        $Product->sizes = $sizes;
-        $Product->colors = $colors;
-        $Product->image_1 =   $image1Name;
-        $Product->image_2 =   $image2Name;
-        $Product->image_3 =   $image3Name;
-        $Product->save();
-        // updated current price is
-        $updatedCurrentPrice =  $Product->currentPrice;
-        
-$updateCarts = DB::table('carts')
-              ->select('productQuantity')
-              ->where(['productId'=>$req->id])
-              ->get();
-              if(count($updateCarts) !== 0){
-foreach($updateCarts as $updateCart){
-$updateCartTotalPrice = $updatedCurrentPrice * $updateCart->productQuantity;
-               DB::table('carts')
-               ->whereIn('orderStatus',['Active','Canceled','inCart'])
-              ->update(['productPrice'=> $updatedCurrentPrice,'productTotalPrice'=>$updateCartTotalPrice,'productImage'=>$Product->image_1,"productName"=>$Product->name]);
-              
-}
-              }
-       
-return back()->with('product-updated','Product has been updated successfully');
-    }
+
+        }
+
+
+
     public function deleteProduct($id){
         if(session()->has('adminLoggedIn')){
             $Product = Product::find($id);
