@@ -7,38 +7,38 @@
 
   <!-- Header Section Begin -->
   <header class="header-section">
- 
+
         <div id="navbar" class="nav-item">
             <div class="container">
-              
-            
-              
+
+
+
    <nav class="nav-menu mobile-menu">
    <ul class="d-flex flex-wrap">
                     <li><a href="/admin-panel">Admin Panel</a></li>
-                    <li><a href="/admin-panel/add-service">Add Service</a> 
+                    <li><a href="/admin-panel/add-service">Add Service</a>
                         </li>
-                 <li><a href="/admin-panel/admin-view-services">View Services</a> 
+                 <li><a href="/admin-panel/admin-view-services">View Services</a>
                         </li>
                         <li><a href="/admin-panel/add-product-category">Add Product Category</a>
-                    
+
                     </li>
                     <li><a href="#">View Product Categories</a>
                     <ul class="dropdown">
                             @foreach($services as $service)
                             <li><a href="/admin-panel/admin-view-categories/{{$service->service}}">{{$service->service}}</a></li>
                             @endforeach
-                        
+
                             </ul>
                 </li>
-                    
-                 
+
+
                      <li><a href="#">Add Product</a>
                      <ul class="dropdown">
                             @foreach($services as $service)
                             <li><a href="/admin-panel/add-product/{{$service->service}}">{{$service->service}}</a></li>
                             @endforeach
-                        
+
                             </ul>
                     </li>
                     <li><a href="#">View Products</a>
@@ -46,30 +46,30 @@
                             @foreach($services as $service)
                             <li><a href="/admin-panel/view-products/{{$service->service}}">{{$service->service}}</a></li>
                             @endforeach
-                        
+
                             </ul>
                     </li>
-                    <li><a href="/admin-panel/all-products">All Products</a>  
+                    <li><a href="/admin-panel/all-products">All Products</a>
                         </li>
-                    
-                     <li><a href="/admin-panel/add-global-tags">Add Global Tag</a>  
+
+                     <li><a href="/admin-panel/add-global-tags">Add Global Tag</a>
                         </li>
-                        <li><a href="#">View Global Tags</a>  
+                        <li><a href="#">View Global Tags</a>
                         <ul class="dropdown">
                             @foreach($services as $service)
                             <li><a href="/admin-panel/admin-view-tags/{{$service->service}}">{{$service->service}}</a></li>
                             @endforeach
-                        
+
                             </ul>
                         </li>
-                       
-                        <li><a href="/admin-panel/active-orders">Active Orders </a>  
+
+                        <li><a href="/admin-panel/active-orders">Active Orders </a>
                         </li>
-                        <li><a href="/admin-panel/completed-orders">Completed Orders </a>  
+                        <li><a href="/admin-panel/completed-orders">Completed Orders </a>
                         </li>
-                        <li><a href="/admin-panel/messages">Messages</a>  
+                        <li><a href="/admin-panel/messages">Messages</a>
                         </li>
-                   
+
                      <li>
                  <form method="POST" action="{{ route('admin.logout') }}">
                          @csrf
@@ -79,17 +79,17 @@
                      </form>
                   </li>
                 </ul>
-           
+
                 </nav>
 <div id="mobile-menu-wrap"></div>
             </div>
         </div>
-    </header>    
+    </header>
     <!-- Header End -->
 
 
-       
-     
+
+
  <!-- Admin Header End -->
     <section style="margin-top: 9rem;">
         <div class="container">
@@ -104,12 +104,12 @@
         @if(Session::has('product-updated'))
         <div class="alert alert-success" role="alert">{{Session::get('product-updated')}}</div>
         @endif
-      
+
         <form action="{{route('product.update')}}" method="POST"  enctype="multipart/form-data">
-    @csrf 
+    @csrf
     <input  type="hidden" name="id" value="{{$product->id}}">
-    <input  type="hidden" name="service" value="{{$product->service}}"> 
-    <input  type="hidden" name="productCategory" value="{{$product->category}}"> 
+    <input  type="hidden" name="service" value="{{$product->service}}">
+    <input  type="hidden" name="productCategory" value="{{$product->category}}">
     <div class="form-group">
         <lebel for="name">Product Name (Required)</lebel>
         <input required type="text" id="name" name="name" class="form-control" value="{{$product->name}}">
@@ -131,23 +131,27 @@
         <input type="text" name="previousPrice" id="previousPrice"  class="form-control" value="{{$product->previousPrice}}">
     </div>
     <div class="form-group">
-        <lebel for="img1">Image 1 (Required)</lebel>
-        <input required type="file" name="img1" class="form-control" >
-    
+         <lebel for="img1">Image 1 (Optional)</lebel> <br>
+        <img src="/ProductImages/{{$product->image_1}}" alt="product" style="width: 200px; height:150px;" >
+         <input type="file" name="img1" class="form-control" >
+
     </div>
     <div class="form-group">
-        <lebel for="img2">Image 2 (Required)</lebel>
-        <input required type="file" name="img2" class="form-control" >
+        <lebel for="img2">Image 2 (Optional)</lebel> <br>
+        <img src="/ProductImages/{{$product->image_2}}" alt="product" style="width: 200px; height:150px;">
+        <input type="file" name="img2" class="form-control" >
+
     </div>
     <div class="form-group">
-        <lebel for="img3">Image 3 (Required)</lebel>
-        <input required type="file" name="img3" class="form-control" >
+        <lebel for="img3">Image 3 (Optional)</lebel> <br>
+        <img src="/ProductImages/{{$product->image_3}}" alt="product" style="width: 200px; height:150px;">
+        <input type="file" name="img3" class="form-control" >
     </div>
-    
-     
-   
+
+
+
     <div class="form-group">
-        <lebel for="productBrand">Choose Product Brand (Required)</lebel> 
+        <lebel for="productBrand">Choose Product Brand (Required)</lebel>
         <input required type="text" name="productBrand" id="productBrand"  class="form-control" value="{{$product->brand}}">
     </div>
     <div class="form-group">
@@ -167,7 +171,7 @@
         <input type="text" name="colors" id="colors"  class="form-control" value="{{$product->colors}}">
     </div>
     <div class="form-group">
-        <lebel for="ids">choose custom id. (heigher ids will be displayed first) Required</lebel> 
+        <lebel for="ids">choose custom id. (heigher ids will be displayed first) Required</lebel>
         <input value="{{$product->ids}}" required type="text" name="ids" id="ids"  class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -182,7 +186,7 @@
 
 
      <!-- Js Plugins -->
-    
+
      <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 
